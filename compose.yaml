@@ -1,6 +1,7 @@
-version '3.8'
+version: '3.8'
 
 services:
+  # Applicazione FastAPI
   api:
     build:
       context: .
@@ -8,11 +9,15 @@ services:
     container_name: fastapi-application
     environment:
       PORT: 8000
+      DATABASE_URL: postgres://postgres:password@db:5432/mydatabase
     ports:
       - '8000:8000'
+    depends_on:
+      - db
     restart: "no"
 
-db:
+  # Database PostgreSQL
+  db:
     image: postgres:15
     container_name: postgres-database
     environment:
@@ -25,17 +30,18 @@ db:
       - '5432:5432'
     restart: always
 
-pgadmin:
-  image: dpage/pgadmin4
-  container_name: pgadmin
-  environment:
-    PGADMIN_DEFAULT_EMAIL: admin@admin.com
-    PGADMIN_DEFAULT_PASSWORD: admin
-  ports:
-    - '5050:80'
-  depends_on:
-    - db
-  restart: always
+  # Sistema di gestione: pgAdmin
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '5050:80'
+    depends_on:
+      - db
+    restart: always
 
 volumes:
   postgres_data:

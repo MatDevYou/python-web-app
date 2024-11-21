@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # Applicazione FastAPI
   api:
     build:
       context: .
@@ -16,7 +15,6 @@ services:
       - db
     restart: "no"
 
-  # Database PostgreSQL
   db:
     image: postgres:15
     container_name: postgres-database
@@ -30,7 +28,6 @@ services:
       - '5432:5432'
     restart: always
 
-  # Sistema di gestione: pgAdmin
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
